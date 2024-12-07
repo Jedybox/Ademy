@@ -8,4 +8,4 @@ __pycache__/
 venv/
 
 # databases
-databases/**
+databases/**.db
