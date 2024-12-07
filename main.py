@@ -10,7 +10,6 @@ if __name__ == "__main__":
     login = LoginForm()
     login.show()
 
+    
 
-    # window = MainWindow()
-    # window.show()
     sys.exit(app.exec())
