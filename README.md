@@ -12,23 +12,42 @@ We are using PyQt6
 
 ### Set-up 
 
-Enter this to terminal before modification
+Enter this to terminal before modification.
 
 
-- In Command Promp
+#### In windows (cmd)
 ```bash
+# Create a virtual environment
 py -m venv venv
 
+# Activate the virtual environment
 .\venv\Scripts\activate.bat
 
+# Install the requirements
 pip install -r requirements.txt
 ```
 
-- In Powershell
+#### In windows (powershell/ps)
 ```powershell
-py -m venv venv
+# Create a virtual environment
+python -m venv venv
 
-.\venv\Scripts\activate.ps1
+# Activate the virtual environment
+.\venv\Scripts\Activate.ps1
 
+# Install the requirements
+pip install -r requirements.txt
+```
+
+#### In MacOs/Linux
+
+```bash
+# Create a virtual environment
+python3 -m venv venv
+
+# Activate the virtual environment
+source venv/bin/activate
+
+# Install the requirements
 pip install -r requirements.txt
 ```
