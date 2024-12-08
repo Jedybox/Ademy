@@ -171,9 +171,9 @@
       <property name="geometry">
        <rect>
         <x>840</x>
-        <y>0</y>
+        <y>40</y>
         <width>431</width>
-        <height>471</height>
+        <height>431</height>
        </rect>
       </property>
       <property name="widgetResizable">
@@ -185,7 +185,7 @@
          <x>0</x>
          <y>0</y>
          <width>429</width>
-         <height>469</height>
+         <height>429</height>
         </rect>
        </property>
        <widget class="QTableWidget" name="tableContent">
@@ -194,7 +194,7 @@
           <x>0</x>
           <y>0</y>
           <width>431</width>
-          <height>471</height>
+          <height>431</height>
          </rect>
         </property>
        </widget>
@@ -203,14 +203,14 @@
      <widget class="QPushButton" name="refreshbtn">
       <property name="geometry">
        <rect>
-        <x>720</x>
-        <y>30</y>
-        <width>75</width>
+        <x>1150</x>
+        <y>10</y>
+        <width>101</width>
         <height>24</height>
        </rect>
       </property>
       <property name="text">
-       <string>Refresh</string>
+       <string>Appy Changes</string>
       </property>
      </widget>
      <widget class="QPushButton" name="addOnTable">
@@ -239,7 +239,7 @@
        <string>Update</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="readOnTablebtn">
+     <widget class="QPushButton" name="displayBtn">
       <property name="geometry">
        <rect>
         <x>370</x>
@@ -249,7 +249,7 @@
        </rect>
       </property>
       <property name="text">
-       <string>Read</string>
+       <string>Display</string>
       </property>
      </widget>
      <widget class="QPlainTextEdit" name="queryEditor">
@@ -262,7 +262,7 @@
        </rect>
       </property>
      </widget>
-     <widget class="QPushButton" name="deleteTable">
+     <widget class="QPushButton" name="deleteFromTable">
       <property name="geometry">
        <rect>
         <x>370</x>
@@ -324,6 +324,21 @@
        <string>Tables</string>
       </property>
      </widget>
+     <zorder>createTableBtn</zorder>
+     <zorder>deleteTableBtn</zorder>
+     <zorder>alterTabelBtn</zorder>
+     <zorder>terminal</zorder>
+     <zorder>scrollArea_2</zorder>
+     <zorder>refreshbtn</zorder>
+     <zorder>addOnTable</zorder>
+     <zorder>displayBtn</zorder>
+     <zorder>queryEditor</zorder>
+     <zorder>deleteFromTable</zorder>
+     <zorder>label_2</zorder>
+     <zorder>pushButton</zorder>
+     <zorder>listWidget</zorder>
+     <zorder>label_3</zorder>
+     <zorder>updateOnTable</zorder>
     </widget>
     <widget class="QWidget" name="databasetab">
      <attribute name="title">

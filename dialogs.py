@@ -278,3 +278,57 @@ class AddData(QDialog):
     def cancel(self):
         self.reject()
         self.close()
+
+class Key(QDialog):
+
+    def __init__(self):
+        super(Key, self).__init__()
+        uic.loadUi('ui/keydata.ui', self)
+
+        self.okbtn.clicked.connect(self.ok)
+    
+    def ok(self):
+        self.accept()
+        self.close()
+    
+    def getKey(self):
+        return self.key.text()
+    
+class UpdateData(QDialog):
+
+    def __init__(self, column, data):
+        super(UpdateData, self).__init__()
+        uic.loadUi('ui/updateData.ui', self)
+
+        self.__columns = column
+        self.__datas = data
+
+        # set columns to table
+        for i in range(len(self.__columns)):
+            self.table.setColumnCount(self.table.columnCount() + 1)
+            self.table.setHorizontalHeaderItem(self.table.columnCount() - 1, QTableWidgetItem(self.__columns[i][0]))
+        
+        # set data to table
+        for i in range(len(self.__datas)):
+            self.table.insertRow(self.table.rowCount())
+            for j in range(len(self.__datas[i])):
+                self.table.setItem(i, j, QTableWidgetItem(self.__datas[i][j]))
+        
+        self.updatebtn.clicked.connect(self.update)
+        self.cancelbtn.clicked.connect(self.cancel)
+    
+    def update(self):
+        self.accept()
+        self.close()
+    
+    def cancel(self):
+        self.reject()
+        self.close()
+    
+    def get_data(self) -> list[str]:
+        data = []
+        for i in range(self.table.rowCount()):
+            for j in range(self.table.columnCount()):
+                data.append(self.table.item(i, j).text())
+
+        return data
