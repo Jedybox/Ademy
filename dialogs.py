@@ -1,5 +1,6 @@
-from PyQt6.QtWidgets import QDialog, QMessageBox
+from PyQt6.QtWidgets import QDialog, QMessageBox, QTableWidgetItem
 from PyQt6 import uic
+from User import User
 import sys
 import sqlite3
 
@@ -218,3 +219,62 @@ class CreateTable(QDialog):
     
     def minus(self):
         self.table.removeRow(self.table.rowCount() - 1)
+
+class AddData(QDialog):
+
+    def __init__(self, user: User, table: str):
+        super(AddData, self).__init__()
+        uic.loadUi('ui/addData.ui', self)
+
+        self.__user = user
+        self.__table = table
+
+        # get table columns
+        conn = sqlite3.connect('databases/{}.db'.format(self.__user.get_username()))
+        cursor = conn.cursor()
+
+        cursor.execute('PRAGMA table_info({})'.format(self.__table))
+        columns = cursor.fetchall()
+        conn.close()
+
+        # add columns to the table
+        for column in columns:
+            self.tableWidget.setColumnCount(self.tableWidget.columnCount() + 1)
+            self.tableWidget.setHorizontalHeaderItem(self.tableWidget.columnCount() - 1, QTableWidgetItem(column[1]))
+        
+        self.addbtn.clicked.connect(self.add)
+        self.minusbtn.clicked.connect(self.minus)
+        self.addData.clicked.connect(self.add_data)
+        self.cancelbtn.clicked.connect(self.cancel)
+    
+    def add(self):
+        self.tableWidget.insertRow(self.tableWidget.rowCount())
+    
+    def minus(self):
+        self.tableWidget.removeRow(self.tableWidget.rowCount() - 1)
+    
+    def add_data(self):
+        conn = sqlite3.connect('databases/{}.db'.format(self.__user.get_username()))
+        cursor = conn.cursor()
+
+        query = 'INSERT INTO {} VALUES ('.format(self.__table)
+        for i in range(self.tableWidget.columnCount()):
+            query += '?, '.format(self.tableWidget.item(0, i).text())
+
+            
+        query = query[:-2] + ')'
+
+        for i in range(self.tableWidget.rowCount()):
+            values = []
+            for j in range(self.tableWidget.columnCount()):
+                values.append(self.tableWidget.item(i, j).text())
+            cursor.execute(query, values)
+
+        conn.commit()
+        conn.close()
+        self.accept()
+        self.close()
+
+    def cancel(self):
+        self.reject()
+        self.close()

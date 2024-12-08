@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import QMainWindow, QMessageBox
 from PyQt6 import uic
 from PyQt6.QtCore import Qt
 from User import User
-from Dialogs import Login, Register, CreateTable
+from Dialogs import Login, Register, CreateTable, AddData
 import sqlite3
 
 class MainWindow(QMainWindow):
@@ -30,6 +30,8 @@ class MainWindow(QMainWindow):
         
         self.createTableBtn.clicked.connect(self.create_table)
         self.deleteTableBtn.clicked.connect(self.delete_table)
+        self.addOnTable.clicked.connect(self.add_on_table)
+
 
         self.diplayTables()
 
@@ -79,4 +81,17 @@ class MainWindow(QMainWindow):
             print(table[0])
 
         conn.close()
+
+    def add_on_table(self):
+        table = self.listWidget.currentItem().text() if self.listWidget.currentItem() is not None else ''
         
+        if table == '':
+            return
+
+        dialog = AddData(self.__user, table)
+        dialog.exec()
+
+        if dialog.result() == 1:
+            self.terminal.append("Data added successfully")
+            
+        pass        
