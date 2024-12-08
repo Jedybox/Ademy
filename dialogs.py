@@ -1,108 +1,93 @@
-from PyQt6.QtWidgets import QApplication, QDialog, QMessageBox
+from PyQt6.QtWidgets import QDialog, QMessageBox
 from PyQt6 import uic
 import sys
 import sqlite3
 
-
-class LoginForm(QDialog):
-
+class Login(QDialog):
     def __init__(self):
-        super(LoginForm, self).__init__()
-        uic.loadUi("ui/loginform.ui", self)
-
+        super(Login, self).__init__()
+        uic.loadUi('ui/loginform.ui', self)
+    
         self.loginbtn.clicked.connect(self.login)
-        self.newuserbtn.clicked.connect(self.newuser)
-
-        self.__username = None
-        self.__password = None
+        self.newuserbtn.clicked.connect(self.new_user)
     
     def login(self):
-        self.__username = self.username.text()
-        self.__password = self.password.text()
 
-        conn = sqlite3.connect("databases/users.db")
+        uname = self.username.text()
+        passwd = self.password.text()
+
+        conn = sqlite3.connect('databases/users.db')
         cursor = conn.cursor()
 
-        cursor.execute(""" 
-            SELECT * FROM users WHERE username = ? AND password = ?;
-        """, (self.__username, self.__password))
-        
+        cursor.execute('SELECT * FROM users WHERE username = ? AND password = ?', (uname, passwd))
         user = cursor.fetchone()
+
         conn.close()
 
         if user is None:
-            QMessageBox.critical(self, "Error", "Invalid username or password")
-            self.__username = None
-            self.__password = None
+            QMessageBox.warning(self, 'Error', 'Invalid username or password')
             return
 
-        self.hide()
-    
-    def newuser(self):
-        # Hide the login form
-        self.hide()
+        self.accept()
+        self.close()
 
-        # Clear any existing text in username and password fields
-        self.username.clear()
-        self.password.clear()
-
-        # Create and show the register form
-        register = RegisterForm(self)
-        register.exec()  # Block until the user finishes registration
-
-        # Show login form after registration or cancel
-        self.show()
-    
-    def get_username(self):
-        return self.__username
-    
-    def get_password(self):
-        return self.__password
+    def new_user(self):
+        self.reject()
+        self.close()
     
     def closeEvent(self, event):
-        QApplication.quit()  # Use quit instead of sys.exit(0)
+        sys.exit()
 
-
-class RegisterForm(QDialog):
-
-    def __init__(self, parent: LoginForm):
-        super().__init__()
-        uic.loadUi("ui/signup.ui", self)
-
-        self.__parent = parent
+class Register(QDialog):
+    def __init__(self):
+        super(Register, self).__init__()
+        uic.loadUi('ui/signup.ui', self)
+    
         self.registerbtn.clicked.connect(self.register)
         self.cancelbtn.clicked.connect(self.cancel)
     
     def register(self):
-        username = self.username.text()
-        password = self.password.text()
-        repassword = self.repassword.text()
+        uname = self.username.text()
+        passwd = self.password.text()
+        repasswd = self.repassword.text()
 
-        if username == "" or password == "" or repassword == "":
-            QMessageBox.critical(self, "Error", "Username and passwords must not be empty")
+        if uname == '' or passwd == '' or repasswd == '':
+            QMessageBox.warning(self, 'Error', 'Please fill all fields')
             return
         
-        if password != repassword:
-            QMessageBox.critical(self, "Error", "Passwords do not match")
+        if passwd != repasswd:
+            QMessageBox.warning(self, 'Error', 'Passwords do not match')
+            return
+        
+        if uname == 'users':
+            QMessageBox.warning(self, 'Error', 'Invalid username')
             return
 
-        conn = sqlite3.connect("databases/users.db")
+        conn = sqlite3.connect('databases/users.db')
         cursor = conn.cursor()
 
-        cursor.execute("""
-            INSERT INTO users (username, password) VALUES (?, ?);
-        """, (username, password))
+        cursor.execute('SELECT * FROM users WHERE username = ?', (uname,))
+
+        if cursor.fetchone() is not None:
+            QMessageBox.warning(self, 'Error', 'Username already exists')
+            conn.close()
+            return
         
+        cursor.execute('INSERT INTO users (username, password) VALUES (?, ?)', (uname, passwd))
         conn.commit()
         conn.close()
 
-        self.__parent.show()  # Show the parent dialog again
-        self.close()  # Close the register dialog
-    
+        conn = sqlite3.connect('databases/{}.db'.format(uname))
+        conn.commit()
+        conn.close()
+
+        self.accept()
+        self.close()
+
     def cancel(self):
-        self.__parent.show()  # Show the parent dialog again
-        self.close()  # Close the register dialog
+        self.reject()
+        self.close()
     
     def closeEvent(self, event):
-        self.__parent.show()  # Ensure the parent dialog is visible
-        self.close()  # Close the register dialog
+        self.reject()
+        self.close()
