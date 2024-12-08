@@ -107,101 +107,6 @@ class CreateTable(QDialog):
         self.minusbtn.clicked.connect(self.minus)
     
     def create(self):
-        conn = sqlite3.connect('databases/{}.db'.format(self.__user.get_username()))
-        cursor = conn.cursor()
-
-        table_name = self.tableName.text()
-
-        # Check if table name is empty
-        if table_name == '':
-            QMessageBox.warning(self, 'Error', 'Please specify a table name')
-            return
-        
-        # Check if table name is valid
-        cursor.execute('SELECT name FROM sqlite_master WHERE type = "table" AND name = ?', (table_name,))
-        if cursor.fetchone() is not None:
-            QMessageBox.warning(self, 'Error', 'Table already exists')
-            return
-
-        # Check if there are no columns
-        if self.table.rowCount() == 0:
-            QMessageBox.warning(self, 'Error', 'Please add columns')
-            return
-
-        # Check if there are empty column names
-        for i in range(self.table.rowCount()):
-            if self.table.item(i, 0) is None:
-                QMessageBox.warning(self, 'Error', 'Please fill all column names')
-                return
-        
-        # Check if there are empty column types
-        for i in range(self.table.rowCount()):
-            if self.table.item(i, 1) is None:
-                QMessageBox.warning(self, 'Error', 'Please fill all column types')
-                return
-        
-        # Check if there are duplicate column names
-        column_names = []
-        for i in range(self.table.rowCount()):
-            if self.table.item(i, 0).text() in column_names:
-                QMessageBox.warning(self, 'Error', 'Duplicate column names')
-                return
-            column_names.append(self.table.item(i, 0).text())
-        
-        # Check if there is only one primary key
-        primary_keys = 0
-        for i in range(self.table.rowCount()):
-            
-            if self.table.item(i, 2) is None:
-                continue
-
-            if self.table.item(i, 2).text() == 'P' or self.table.item(i, 2).text() == 'p':
-                primary_keys += 1
-            if primary_keys > 1:
-                QMessageBox.warning(self, 'Error', 'Only one primary key is allowed')
-                return
-
-        # Check if there are no primary keys
-        if primary_keys == 0:
-            QMessageBox.warning(self, 'Error', 'Please specify a primary key')
-            return
-        
-        # Create table
-        query = """
-        CREATE TABLE {} (
-        """.format(table_name)
-        foriegn_key = []
-
-        for i in range(self.table.rowCount()):
-            name_ = self.table.item(i, 0).text()
-            type_ = self.table.item(i, 1).text()
-            keyType = self.table.item(i, 2).text() if self.table.item(i, 2) is not None else ''
-            
-            if keyType == 'P' or keyType == 'p':
-                keyType = 'PRIMARY KEY'
-            elif ',' in keyType:
-                
-                if keyType.count(',') > 1:
-                    QMessageBox.warning(self, 'Error', 'Foreign key input error')
-                    return
-                
-                keyType = keyType.replace(' ', '')
-                
-                foriegn_key = keyType.split(',')
-                foriegn_key.append(name_)
-
-            query += '{} {} {},\n'.format(name_, type_, keyType)
-        
-        if foriegn_key:
-            query += 'FOREIGN KEY ({}) REFERENCES {}({}),\n'.format(
-                foriegn_key[2], foriegn_key[0], foriegn_key[1]
-            )
-        
-        query = query[:-2] + ');'
-
-        cursor.execute(query)
-        conn.commit()
-        conn.close()
 
         self.accept()
         self.close()
@@ -254,24 +159,7 @@ class AddData(QDialog):
         self.tableWidget.removeRow(self.tableWidget.rowCount() - 1)
     
     def add_data(self):
-        conn = sqlite3.connect('databases/{}.db'.format(self.__user.get_username()))
-        cursor = conn.cursor()
-
-        query = 'INSERT INTO {} VALUES ('.format(self.__table)
-        for i in range(self.tableWidget.columnCount()):
-            query += '?, '.format(self.tableWidget.item(0, i).text())
-
-            
-        query = query[:-2] + ')'
-
-        for i in range(self.tableWidget.rowCount()):
-            values = []
-            for j in range(self.tableWidget.columnCount()):
-                values.append(self.tableWidget.item(i, j).text())
-            cursor.execute(query, values)
-
-        conn.commit()
-        conn.close()
+        
         self.accept()
         self.close()
 

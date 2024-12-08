@@ -35,10 +35,7 @@
    <string>Ademy</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QMainWindow {
-                background-color: white;
-                border-radius: 20px;
-            }</string>
+   <string notr="true">background:rgb(85, 170, 0)</string>
   </property>
   <property name="animated">
    <bool>false</bool>
@@ -56,8 +53,8 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>0</y>
+      <x>10</x>
+      <y>10</y>
       <width>141</width>
       <height>41</height>
      </rect>
@@ -75,7 +72,7 @@
      </size>
     </property>
     <property name="styleSheet">
-     <string notr="true">font: 24pt &quot;Segoe UI&quot;;</string>
+     <string notr="true">font: 700 26pt &quot;Yu Gothic&quot;;</string>
     </property>
     <property name="text">
      <string>Ademy</string>
@@ -138,19 +135,6 @@
        <string>Delete Table</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="alterTabelBtn">
-      <property name="geometry">
-       <rect>
-        <x>250</x>
-        <y>130</y>
-        <width>81</width>
-        <height>24</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Alter Table</string>
-      </property>
-     </widget>
      <widget class="QTextEdit" name="terminal">
       <property name="geometry">
        <rect>
@@ -162,6 +146,12 @@
       </property>
       <property name="mouseTracking">
        <bool>true</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background:rgb(31, 31, 31);
+font: 600 12pt &quot;Yu Gothic UI Semibold&quot; ;
+color: rgb(255, 255, 255);
+</string>
       </property>
       <property name="readOnly">
        <bool>true</bool>
@@ -197,10 +187,17 @@
           <height>431</height>
          </rect>
         </property>
+        <property name="styleSheet">
+         <string notr="true">background:rgb(31, 31, 31);
+font: 600 12pt &quot;Yu Gothic UI Semibold&quot; ;
+color: rgb(255, 255, 255);
+
+</string>
+        </property>
        </widget>
       </widget>
      </widget>
-     <widget class="QPushButton" name="refreshbtn">
+     <widget class="QPushButton" name="applyChangesBtn">
       <property name="geometry">
        <rect>
         <x>1150</x>
@@ -229,9 +226,9 @@
      <widget class="QPushButton" name="updateOnTable">
       <property name="geometry">
        <rect>
-        <x>370</x>
-        <y>80</y>
-        <width>75</width>
+        <x>250</x>
+        <y>130</y>
+        <width>81</width>
         <height>24</height>
        </rect>
       </property>
@@ -243,7 +240,7 @@
       <property name="geometry">
        <rect>
         <x>370</x>
-        <y>130</y>
+        <y>80</y>
         <width>75</width>
         <height>24</height>
        </rect>
@@ -261,12 +258,18 @@
         <height>231</height>
        </rect>
       </property>
+      <property name="styleSheet">
+       <string notr="true">background:rgb(31, 31, 31);
+color: rgb(255, 255, 255);
+font: 700 24pt &quot;System&quot;;
+</string>
+      </property>
      </widget>
      <widget class="QPushButton" name="deleteFromTable">
       <property name="geometry">
        <rect>
         <x>370</x>
-        <y>180</y>
+        <y>130</y>
         <width>75</width>
         <height>24</height>
        </rect>
@@ -278,17 +281,22 @@
      <widget class="QLabel" name="label_2">
       <property name="geometry">
        <rect>
-        <x>1170</x>
+        <x>1130</x>
         <y>480</y>
-        <width>91</width>
+        <width>121</width>
         <height>16</height>
        </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 600 12pt &quot;Yu Gothic UI Semibold&quot; ;
+color: rgb(255, 255, 255);
+background: transparent;</string>
       </property>
       <property name="text">
        <string>Terminal Output</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton">
+     <widget class="QPushButton" name="runQuery">
       <property name="geometry">
        <rect>
         <x>760</x>
@@ -310,32 +318,56 @@
         <height>601</height>
        </rect>
       </property>
+      <property name="styleSheet">
+       <string notr="true">background:rgb(31, 31, 31);
+font: 600 12pt &quot;Yu Gothic UI Semibold&quot; ;
+color: rgb(255, 255, 255);
+</string>
+      </property>
      </widget>
      <widget class="QLabel" name="label_3">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>10</y>
-        <width>49</width>
-        <height>16</height>
+        <y>5</y>
+        <width>61</width>
+        <height>21</height>
        </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 600 12pt &quot;Yu Gothic UI Semibold&quot; ;
+color: rgb(255, 255, 255);
+background: transparent;</string>
       </property>
       <property name="text">
        <string>Tables</string>
       </property>
      </widget>
+     <widget class="QWidget" name="widget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>-1</y>
+        <width>1271</width>
+        <height>241</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background:rgb(31, 31, 31)</string>
+      </property>
+     </widget>
+     <zorder>widget</zorder>
      <zorder>createTableBtn</zorder>
      <zorder>deleteTableBtn</zorder>
-     <zorder>alterTabelBtn</zorder>
      <zorder>terminal</zorder>
      <zorder>scrollArea_2</zorder>
-     <zorder>refreshbtn</zorder>
+     <zorder>applyChangesBtn</zorder>
      <zorder>addOnTable</zorder>
      <zorder>displayBtn</zorder>
      <zorder>queryEditor</zorder>
      <zorder>deleteFromTable</zorder>
      <zorder>label_2</zorder>
-     <zorder>pushButton</zorder>
+     <zorder>runQuery</zorder>
      <zorder>listWidget</zorder>
      <zorder>label_3</zorder>
      <zorder>updateOnTable</zorder>
