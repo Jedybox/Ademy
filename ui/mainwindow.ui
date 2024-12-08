@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1138</width>
-    <height>653</height>
+    <width>1268</width>
+    <height>696</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -86,8 +86,8 @@
      <rect>
       <x>0</x>
       <y>50</y>
-      <width>1141</width>
-      <height>601</height>
+      <width>1271</width>
+      <height>651</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -95,6 +95,9 @@
       <horstretch>0</horstretch>
       <verstretch>0</verstretch>
      </sizepolicy>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
     </property>
     <property name="tabPosition">
      <enum>QTabWidget::North</enum>
@@ -109,45 +112,12 @@
      <attribute name="title">
       <string>Tables</string>
      </attribute>
-     <widget class="QScrollArea" name="scrollArea">
+     <widget class="QPushButton" name="createTableBtn">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>161</width>
-        <height>581</height>
-       </rect>
-      </property>
-      <property name="widgetResizable">
-       <bool>true</bool>
-      </property>
-      <widget class="QWidget" name="scrollAreaWidgetContents">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>159</width>
-         <height>579</height>
-        </rect>
-       </property>
-       <widget class="QTableView" name="tableView">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>161</width>
-          <height>581</height>
-         </rect>
-        </property>
-       </widget>
-      </widget>
-     </widget>
-     <widget class="QPushButton" name="pushButton">
-      <property name="geometry">
-       <rect>
-        <x>180</x>
-        <y>10</y>
-        <width>75</width>
+        <x>250</x>
+        <y>30</y>
+        <width>81</width>
         <height>24</height>
        </rect>
       </property>
@@ -155,59 +125,55 @@
        <string>Create Table</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_2">
+     <widget class="QPushButton" name="deleteTableBtn">
       <property name="geometry">
        <rect>
-        <x>270</x>
-        <y>10</y>
-        <width>71</width>
+        <x>250</x>
+        <y>80</y>
+        <width>81</width>
         <height>24</height>
        </rect>
       </property>
       <property name="text">
-       <string>Delete</string>
+       <string>Delete Table</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_3">
+     <widget class="QPushButton" name="alterTabelBtn">
       <property name="geometry">
        <rect>
-        <x>350</x>
-        <y>10</y>
-        <width>75</width>
+        <x>250</x>
+        <y>130</y>
+        <width>81</width>
         <height>24</height>
        </rect>
       </property>
       <property name="text">
-       <string>Alter</string>
+       <string>Alter Table</string>
       </property>
      </widget>
-     <widget class="QTextEdit" name="textEdit">
+     <widget class="QTextEdit" name="terminal">
       <property name="geometry">
        <rect>
-        <x>160</x>
+        <x>210</x>
         <y>470</y>
-        <width>981</width>
-        <height>111</height>
+        <width>1061</width>
+        <height>161</height>
        </rect>
       </property>
-     </widget>
-     <widget class="QTextEdit" name="textEdit_2">
-      <property name="geometry">
-       <rect>
-        <x>160</x>
-        <y>40</y>
-        <width>561</width>
-        <height>431</height>
-       </rect>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
       </property>
      </widget>
      <widget class="QScrollArea" name="scrollArea_2">
       <property name="geometry">
        <rect>
-        <x>720</x>
-        <y>40</y>
-        <width>421</width>
-        <height>431</height>
+        <x>840</x>
+        <y>0</y>
+        <width>431</width>
+        <height>471</height>
        </rect>
       </property>
       <property name="widgetResizable">
@@ -218,33 +184,144 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>419</width>
-         <height>429</height>
+         <width>429</width>
+         <height>469</height>
         </rect>
        </property>
-       <widget class="QTableWidget" name="tableWidget">
+       <widget class="QTableWidget" name="tableContent">
         <property name="geometry">
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>421</width>
-          <height>431</height>
+          <width>431</width>
+          <height>471</height>
          </rect>
         </property>
        </widget>
       </widget>
      </widget>
-     <widget class="QPushButton" name="pushButton_4">
+     <widget class="QPushButton" name="refreshbtn">
       <property name="geometry">
        <rect>
-        <x>640</x>
-        <y>50</y>
+        <x>720</x>
+        <y>30</y>
         <width>75</width>
         <height>24</height>
        </rect>
       </property>
       <property name="text">
-       <string>Run Query</string>
+       <string>Refresh</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="addOnTable">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>30</y>
+        <width>75</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Add</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="updateOnTable">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>80</y>
+        <width>75</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Update</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="readOnTablebtn">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>130</y>
+        <width>75</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Read</string>
+      </property>
+     </widget>
+     <widget class="QPlainTextEdit" name="queryEditor">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>240</y>
+        <width>631</width>
+        <height>231</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="deleteTable">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>180</y>
+        <width>75</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Delete</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_2">
+      <property name="geometry">
+       <rect>
+        <x>1170</x>
+        <y>480</y>
+        <width>91</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Terminal Output</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton">
+      <property name="geometry">
+       <rect>
+        <x>760</x>
+        <y>250</y>
+        <width>75</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Run</string>
+      </property>
+     </widget>
+     <widget class="QListWidget" name="listWidget">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>30</y>
+        <width>211</width>
+        <height>601</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_3">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>49</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Tables</string>
       </property>
      </widget>
     </widget>

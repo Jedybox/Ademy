@@ -9,3 +9,6 @@ venv/
 
 # databases
 databases/**.db
+
+# test.py
+test.py
