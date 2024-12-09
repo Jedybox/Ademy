@@ -220,3 +220,5 @@ class UpdateData(QDialog):
                 data.append(self.table.item(i, j).text())
 
         return data
+
+    

@@ -103,7 +103,7 @@
      <enum>QTabWidget::Triangular</enum>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="querytab">
      <attribute name="title">
@@ -149,7 +149,7 @@
       </property>
       <property name="styleSheet">
        <string notr="true">background:rgb(31, 31, 31);
-font: 600 12pt &quot;Yu Gothic UI Semibold&quot; ;
+font: 600 12pt &quot;System&quot; ;
 color: rgb(255, 255, 255);
 </string>
       </property>

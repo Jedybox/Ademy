@@ -7,3 +7,5 @@ if __name__ == '__main__':
     app = QApplication([])
     window = MainWindow()
     sys.exit(app.exec())
+
+print('We Done!')

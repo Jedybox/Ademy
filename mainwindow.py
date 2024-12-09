@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem
+from PyQt6.QtWidgets import QApplication, QMainWindow, QMessageBox, QTableWidgetItem
 from PyQt6 import uic
 from User import User
 from Dialogs import Login, Register, CreateTable, AddData, Key, UpdateData
@@ -39,6 +39,14 @@ class MainWindow(QMainWindow):
 
         self.diplayTables()
 
+        #centering the window
+        screen = QApplication.primaryScreen()
+        screen_geometry = screen.availableGeometry()
+        window_geometry = self.frameGeometry()
+        window_geometry.moveCenter(screen_geometry.center())
+        self.move(window_geometry.topLeft())
+
+
         self.show()
 
         self.terminal.append("Welcome to SQLite ADEMY")
@@ -71,101 +79,87 @@ class MainWindow(QMainWindow):
         dialog = CreateTable(self.__user)
         dialog.exec()
 
+        if dialog.result() == 0:
+            return
+
+        if dialog.tableName.text() == '':
+            self.terminal.append("Invalid table name")
+            return
+        
         conn = sqlite3.connect('databases/{}.db'.format(self.__user.get_username()))
         cursor = conn.cursor()
 
-        table_name = dialog.tableName.text()
+        cursor.execute("PRAGMA foreign_keys = ON")
 
-        # Check if table name is empty
-        if table_name.strip() == '':
-            self.terminal.append("Table name cannot be empty")
-            return
+        query = f"""
+                CREATE TABLE {dialog.tableName.text()} (
+                """
         
-        # Check if table name is valid
-        cursor.execute('SELECT name FROM sqlite_master WHERE type = "table" AND name = ?', (table_name,))
-        if cursor.fetchone() is not None:
-            self.terminal.append("Table already exists")
-            return
+        primary_key_count: int = 0
+        foreign_keys = ""
 
-        # Check if there are no columns
-        if dialog.table.rowCount() == 0:
-            self.terminal.append("Please add columns")
-            return
+        for i in range(dialog.table.rowCount()):
+            query += "{} {}, ".format(dialog.table.item(i, 0).text(), dialog.table.item(i, 1).text())
 
-        # Check if there are empty column names
-        for i in range(dialog.table.rowCount()):
-            if dialog.table.item(i, 0) is None:
-                self.terminal.append("Please fill all column names")
-                return
-        
-        # Check if there are empty column types
-        for i in range(dialog.table.rowCount()):
-            if dialog.table.item(i, 1) is None:
-                self.terminal.append("Please fill all column types")
-                return
-        
-        # Check if there are duplicate column names
-        column_names = []
-        for i in range(dialog.table.rowCount()):
-            if dialog.table.item(i, 0).text() in column_names:
-                self.terminal.append("Duplicate column names are not allowed")
-                return
-            column_names.append(dialog.table.item(i, 0).text())
-        
-        # Check if there is only one primary key
-        primary_keys = 0
-        for i in range(dialog.table.rowCount()):
-            
             if dialog.table.item(i, 2) is None:
-                continue
+                pass
+            elif dialog.table.item(i, 2).text() == 'P' or dialog.table.item(i, 2).text() == 'p':
+                primary_key_count += 1
+                query = query[:-2] +  " PRIMARY KEY, "
+            elif ',' in dialog.table.item(i, 2).text():
 
-            if dialog.table.item(i, 2).text() == 'P' or dialog.table.item(i, 2).text() == 'p':
-                primary_keys += 1
-            if primary_keys > 1:
-                self.terminal.append("Only one primary key is allowed")
-                return
-
-        # Check if there are no primary keys
-        if primary_keys == 0:
-            self.terminal.append("Please specify a primary key")
-            return
-        
-        # Create table
-        query = """
-        CREATE TABLE {} (
-        """.format(table_name)
-        foriegn_key = []
-
-        for i in range(self.table.rowCount()):
-            name_ = self.table.item(i, 0).text()
-            type_ = self.table.item(i, 1).text()
-            keyType = self.table.item(i, 2).text() if self.table.item(i, 2) is not None else ''
-            
-            if keyType == 'P' or keyType == 'p':
-                keyType = 'PRIMARY KEY'
-            elif ',' in keyType:
-                
-                if keyType.count(',') > 1:
-                    self.terminal.append("Error. Foreign key input error.")
+                if len(dialog.table.item(i, 2).text().split(',')) != 2:
+                    self.terminal.append("Invalid foreign key")
                     return
                 
-                keyType = keyType.replace(' ', '')
-                
-                foriegn_key = keyType.split(',')
-                foriegn_key.append(name_)
+                foreign_keys += " FOREIGN KEY ({}) REFERENCES {}({}), ".format(
+                    dialog.table.item(i, 0).text(), 
+                    dialog.table.item(i, 2).text().split(',')[0], 
+                    dialog.table.item(i, 2).text().split(',')[1])
+            elif len(dialog.table.item(i, 2).text()) > 0:
+                self.terminal.append("Invalid key type")
+                return
+            
+            if dialog.table.item(i, 3) is None:
+                pass
+            elif dialog.table.item(i, 3).text() == 'U' or dialog.table.item(i, 3).text() == 'u':
+                query = query[:-2] + " UNIQUE, "
+            elif len(dialog.table.item(i, 3).text()) > 0:
+                self.terminal.append("Invalid unique key")
+                return
+            
+            if dialog.table.item(i, 4) is None:
+                pass
+            elif dialog.table.item(i, 4).text() == 'N' or dialog.table.item(i, 4).text() == 'n':
+                query = query[:-2] + " NOT NULL, "
+            elif len(dialog.table.item(i, 4).text()) > 0:
+                self.terminal.append("Invalid not null key")
+                return
+            
+        if primary_key_count > 1:
+            self.terminal.append("Only one primary key is allowed")
+            return
 
-            query += '{} {} {},\n'.format(name_, type_, keyType)
-        
-        if foriegn_key:
-            query += 'FOREIGN KEY ({}) REFERENCES {}({}),\n'.format(
-                foriegn_key[2], foriegn_key[0], foriegn_key[1]
-            )
-        
-        query = query[:-2] + ');'
+        if foreign_keys != "":
+            query += foreign_keys
 
-        cursor.execute(query)
-        conn.commit()
+        query = query[:-2] + ")"
+
+        print(query)
+
+        try:
+            cursor.execute(query)
+            conn.commit()
+            self.terminal.append(f"{dialog.tableName.text()} created successfully")
+        except Exception as e:
+            print(str(e))
+            self.terminal.append("Table creation failed")
+            self.terminal.append("This may be due to invalid data type or invalid foreign key")
+
         conn.close()
+
+        self.listWidget.clear()
+        self.diplayTables()
         
     def diplayTables(self):
         conn = sqlite3.connect('databases/{}.db'.format(self.__user.get_username()))
@@ -176,7 +170,6 @@ class MainWindow(QMainWindow):
 
         for table in tables:
             self.listWidget.addItem(table[0])
-            print(table[0])
 
         conn.close()
 
@@ -192,17 +185,17 @@ class MainWindow(QMainWindow):
         conn = sqlite3.connect('databases/{}.db'.format(self.__user.get_username()))
         cursor = conn.cursor()
 
-        query = 'INSERT INTO {} VALUES ('.format(self.__table)
-        for i in range(self.tableWidget.columnCount()):
-            query += '?, '.format(self.tableWidget.item(0, i).text())
+        query = 'INSERT INTO {} VALUES ('.format(table)
+        for i in range(dialog.tableWidget.columnCount()):
+            query += '?, '.format(dialog.tableWidget.item(0, i).text())
 
             
         query = query[:-2] + ')'
 
-        for i in range(self.tableWidget.rowCount()):
+        for i in range(dialog.tableWidget.rowCount()):
             values = []
-            for j in range(self.tableWidget.columnCount()):
-                values.append(self.tableWidget.item(i, j).text())
+            for j in range(dialog.tableWidget.columnCount()):
+                values.append(dialog.tableWidget.item(i, j).text())
             
             try:
                 cursor.execute(query, values)
@@ -317,8 +310,6 @@ class MainWindow(QMainWindow):
         if table == '':
             return
 
-        self.__table = table
-
         conn = sqlite3.connect('databases/{}.db'.format(self.__user.get_username()))
         cursor = conn.cursor()
 
@@ -361,6 +352,10 @@ class MainWindow(QMainWindow):
         
         if 'database' in query.lower():
             self.terminal.append("You cannot create/drop database")
+            return
+
+        if len(query) == 5 and query.lower() == 'clean':
+            self.terminal.clear()
             return
         
         conn = sqlite3.connect('databases/{}.db'.format(self.__user.get_username()))
