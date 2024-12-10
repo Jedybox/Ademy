@@ -1,8 +1,10 @@
-from PyQt6.QtWidgets import QApplication, QMainWindow, QMessageBox, QTableWidgetItem
+from PyQt6.QtWidgets import QApplication, QMainWindow, QMessageBox, QTableWidgetItem, QGraphicsScene
+from PyQt6.QtGui import QPainter
 from PyQt6 import uic
 from User import User
 from Dialogs import Login, Register, CreateTable, AddData, Key, UpdateData
 import sqlite3
+from graph import Graph
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -28,6 +30,8 @@ class MainWindow(QMainWindow):
                 register = Register()
                 register.exec()
         
+        self.__graph: Graph = Graph(self.__user)
+
         self.createTableBtn.clicked.connect(self.create_table)
         self.deleteTableBtn.clicked.connect(self.delete_table)
         self.addOnTable.clicked.connect(self.add_on_table)
@@ -38,6 +42,11 @@ class MainWindow(QMainWindow):
         self.applyChangesBtn.clicked.connect(self.apply_changes)
 
         self.diplayTables()
+
+        self.__scene = QGraphicsScene()
+        self.graphicsView.setScene(self.__scene)
+        self.graphicsView.setRenderHint(QPainter.RenderHint.Antialiasing)
+
 
         #centering the window
         screen = QApplication.primaryScreen()
@@ -50,6 +59,7 @@ class MainWindow(QMainWindow):
         self.show()
 
         self.terminal.append("Welcome to SQLite ADEMY")
+
 
     def delete_table(self):
         table = self.listWidget.currentItem().text() if self.listWidget.currentItem() is not None else ''
