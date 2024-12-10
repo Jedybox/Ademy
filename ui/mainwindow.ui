@@ -35,7 +35,7 @@
    <string>Ademy</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background:rgb(85, 170, 0)</string>
+   <string notr="true">\</string>
   </property>
   <property name="animated">
    <bool>false</bool>
@@ -94,7 +94,7 @@
      </sizepolicy>
     </property>
     <property name="styleSheet">
-     <string notr="true"/>
+     <string notr="true">background:rgb(255, 255, 255)</string>
     </property>
     <property name="tabPosition">
      <enum>QTabWidget::North</enum>
@@ -103,38 +103,12 @@
      <enum>QTabWidget::Triangular</enum>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="querytab">
      <attribute name="title">
       <string>Tables</string>
      </attribute>
-     <widget class="QPushButton" name="createTableBtn">
-      <property name="geometry">
-       <rect>
-        <x>250</x>
-        <y>30</y>
-        <width>81</width>
-        <height>24</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Create Table</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="deleteTableBtn">
-      <property name="geometry">
-       <rect>
-        <x>250</x>
-        <y>80</y>
-        <width>81</width>
-        <height>24</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Delete Table</string>
-      </property>
-     </widget>
      <widget class="QTextEdit" name="terminal">
       <property name="geometry">
        <rect>
@@ -210,45 +184,6 @@ color: rgb(255, 255, 255);
        <string>Appy Changes</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="addOnTable">
-      <property name="geometry">
-       <rect>
-        <x>370</x>
-        <y>30</y>
-        <width>75</width>
-        <height>24</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Add</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="updateOnTable">
-      <property name="geometry">
-       <rect>
-        <x>250</x>
-        <y>130</y>
-        <width>81</width>
-        <height>24</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Update</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="displayBtn">
-      <property name="geometry">
-       <rect>
-        <x>370</x>
-        <y>80</y>
-        <width>75</width>
-        <height>24</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Display</string>
-      </property>
-     </widget>
      <widget class="QPlainTextEdit" name="queryEditor">
       <property name="geometry">
        <rect>
@@ -263,19 +198,6 @@ color: rgb(255, 255, 255);
 color: rgb(255, 255, 255);
 font: 700 24pt &quot;System&quot;;
 </string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="deleteFromTable">
-      <property name="geometry">
-       <rect>
-        <x>370</x>
-        <y>130</y>
-        <width>75</width>
-        <height>24</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Delete</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_2">
@@ -355,22 +277,118 @@ background: transparent;</string>
       <property name="styleSheet">
        <string notr="true">background:rgb(31, 31, 31)</string>
       </property>
+      <widget class="QPushButton" name="deleteFromTable">
+       <property name="geometry">
+        <rect>
+         <x>300</x>
+         <y>140</y>
+         <width>111</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background:rgb(255, 255, 255);
+font: 12pt &quot;Segoe UI&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Delete</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="updateOnTable">
+       <property name="geometry">
+        <rect>
+         <x>480</x>
+         <y>140</y>
+         <width>111</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background:rgb(255, 255, 255);
+font: 12pt &quot;Segoe UI&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Update</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="deleteTableBtn">
+       <property name="geometry">
+        <rect>
+         <x>480</x>
+         <y>70</y>
+         <width>111</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background:rgb(255, 255, 255);
+font: 12pt &quot;Segoe UI&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Delete Table</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="displayBtn">
+       <property name="geometry">
+        <rect>
+         <x>660</x>
+         <y>140</y>
+         <width>111</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background:rgb(255, 255, 255);
+font: 12pt &quot;Segoe UI&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Display</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="createTableBtn">
+       <property name="geometry">
+        <rect>
+         <x>300</x>
+         <y>70</y>
+         <width>111</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background:rgb(255, 255, 255);
+font: 12pt &quot;Segoe UI&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Create Table</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="addOnTable">
+       <property name="geometry">
+        <rect>
+         <x>660</x>
+         <y>70</y>
+         <width>111</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background:rgb(255, 255, 255);
+font: 12pt &quot;Segoe UI&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Add</string>
+       </property>
+      </widget>
      </widget>
      <zorder>widget</zorder>
-     <zorder>createTableBtn</zorder>
-     <zorder>deleteTableBtn</zorder>
      <zorder>terminal</zorder>
      <zorder>scrollArea_2</zorder>
      <zorder>applyChangesBtn</zorder>
-     <zorder>addOnTable</zorder>
-     <zorder>displayBtn</zorder>
      <zorder>queryEditor</zorder>
-     <zorder>deleteFromTable</zorder>
      <zorder>label_2</zorder>
      <zorder>runQuery</zorder>
      <zorder>listWidget</zorder>
      <zorder>label_3</zorder>
-     <zorder>updateOnTable</zorder>
     </widget>
     <widget class="QWidget" name="databasetab">
      <attribute name="title">

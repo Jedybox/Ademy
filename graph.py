@@ -83,3 +83,6 @@ class Graph:
                 strongly_connected_components.append(component)
 
         return strongly_connected_components
+
+    def get_graph_data(self):
+        return self.graph
