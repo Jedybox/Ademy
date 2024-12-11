@@ -6,4 +6,8 @@ create table users (
 );
 
 
-select * from party;
+-- ALTER TABLE vendors
+-- ADD COLUMN phone VARCHAR(15) AFTER name;
+
+-- ALTER TABLE Orders
+-- ADD FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
