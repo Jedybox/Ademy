@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import QDialog, QMessageBox, QTableWidgetItem
 from PyQt6 import uic
 from User import User
 import sys
-import sqlite3
+import mysql.connector
 
 class Login(QDialog):
     def __init__(self):
@@ -17,10 +17,15 @@ class Login(QDialog):
         uname = self.username.text()
         passwd = self.password.text()
 
-        conn = sqlite3.connect('databases/users.db')
+        conn = mysql.connector.connect(
+            host='localhost',
+            user='root',
+            password='codeleee{123}',
+            database='users'
+        )
         cursor = conn.cursor()
 
-        cursor.execute('SELECT * FROM users WHERE username = ? AND password = ?', (uname, passwd))
+        cursor.execute('SELECT * FROM users WHERE username = %s AND password = %s', (uname, passwd))
         user = cursor.fetchone()
 
         conn.close()
@@ -64,22 +69,27 @@ class Register(QDialog):
             QMessageBox.warning(self, 'Error', 'Invalid username')
             return
 
-        conn = sqlite3.connect('databases/users.db')
+        conn = mysql.connector.connect(
+            host='localhost',
+            user='root',
+            password='codeleee{123}',
+            database='users'
+        )
         cursor = conn.cursor()
 
-        cursor.execute('SELECT * FROM users WHERE username = ?', (uname,))
+        cursor.execute('SELECT * FROM users WHERE username = %s', (uname,))
 
         if cursor.fetchone() is not None:
             QMessageBox.warning(self, 'Error', 'Username already exists')
             conn.close()
             return
         
-        cursor.execute('INSERT INTO users (username, password) VALUES (?, ?)', (uname, passwd))
+        cursor.execute('INSERT INTO users (username, password) VALUES (%s, %s)', (uname, passwd))
         conn.commit()
-        conn.close()
-
-        conn = sqlite3.connect('databases/{}.db'.format(uname))
-        conn.commit()
+        
+        cursor.execute('CREATE DATABASE IF NOT EXISTS {}'.format(uname))
+        conn.commit()    
+        
         conn.close()
 
         self.accept()
@@ -120,32 +130,28 @@ class CreateTable(QDialog):
         self.close()
     
     def add(self):
-        self.table.insertRow(self.table.rowCount())
+        self.tableWidget.insertRow(self.tableWidget.rowCount())
     
     def minus(self):
-        self.table.removeRow(self.table.rowCount() - 1)
+        self.tableWidget.removeRow(self.tableWidget.rowCount() - 1)
 
 class AddData(QDialog):
 
-    def __init__(self, user: User, table: str):
+    def __init__(self, table: str, cursor: mysql.connector.cursor.MySQLCursor):
         super(AddData, self).__init__()
         uic.loadUi('ui/addData.ui', self)
 
-        self.__user = user
         self.__table = table
 
-        # get table columns
-        conn = sqlite3.connect('databases/{}.db'.format(self.__user.get_username()))
-        cursor = conn.cursor()
+        # get table columns names
+        cursor.execute(f"SHOW COLUMNS FROM {self.__table}")
+        self.columns = cursor.fetchall()
 
-        cursor.execute('PRAGMA table_info({})'.format(self.__table))
-        columns = cursor.fetchall()
-        conn.close()
 
         # add columns to the table
-        for column in columns:
+        for i in range(len(self.columns)):
             self.tableWidget.setColumnCount(self.tableWidget.columnCount() + 1)
-            self.tableWidget.setHorizontalHeaderItem(self.tableWidget.columnCount() - 1, QTableWidgetItem(column[1]))
+            self.tableWidget.setHorizontalHeaderItem(self.tableWidget.columnCount() - 1, QTableWidgetItem(self.columns[i][0]))
         
         self.addbtn.clicked.connect(self.add)
         self.minusbtn.clicked.connect(self.minus)

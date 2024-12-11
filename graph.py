@@ -1,45 +1,41 @@
 from User import User
-import sqlite3
+import mysql.connector
 
 class Graph:
 
-    def __init__(self, user: User) -> None:
+    def __init__(self, user: User, cursor: mysql.connector.cursor.MySQLCursor) -> None:
         self.graph = {}
-        self.tables = {}
         self.user = user
 
-        conn = sqlite3.connect(f"databases/{self.user.get_username()}.db")
-        cursor = conn.cursor()
+        # get all tables
+        cursor.execute("""
+                       SHOW TABLES 
+                       """)
+        
+        fetched_tables = cursor.fetchall()
 
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
-        tables = cursor.fetchall()
+        for table in fetched_tables:
+            selected_table = table[0]
 
-        for table_name in tables:
-            table_name = table_name[0]
-            columns = []
-            edges = []
+            cursor.execute("""
+                            SELECT COLUMN_NAME, REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME
+                            FROM information_schema.key_column_usage
+                            WHERE TABLE_SCHEMA = %s
+                            AND TABLE_NAME = %s
+                            AND REFERENCED_TABLE_NAME IS NOT NULL
+                            """, (user.get_username(), selected_table))
 
-            # List columns and primary keys
-            cursor.execute(f"PRAGMA table_info('{table_name}');")
-            for column in cursor.fetchall():
-                col_id, name, data_type, notnull, default, pk = column
-                columns.append(f"  - {name} ({data_type}) {'NOT NULL' if notnull else ''} {'PRIMARY KEY' if pk else ''}")
-            
-            # List foreign keys
-            cursor.execute(f"PRAGMA foreign_key_list('{table_name}');")
-            for fk in cursor.fetchall():
-                _, _, ref_table, from_col, to_col, on_update, on_delete, _ = fk
-                edges.append(f'{ref_table}')
-            
-            self.tables[table_name] = columns
-            self.graph[table_name] = edges
+            fetched_foreign_keys = cursor.fetchall()
 
-        conn.close()
+            if fetched_foreign_keys: print('has foreign keys: ', fetched_foreign_keys)
 
+            foreign_ref_tables = []
+            for foreign_key in fetched_foreign_keys:
+                foreign_ref_tables.append(foreign_key[1])
+
+            self.graph[selected_table] = foreign_ref_tables
+        
         print(self.graph)
-    
-        for links in self.kosaraju():
-            print(links)
     
     def kosaraju(self):
         stack = []
