@@ -496,32 +496,3 @@ class MainWindow(QMainWindow):
 
         except Exception as e:
             self.terminal.append(str(e))
-
-    
-
-        if self.__displayed_table == '':
-            return
-
-        conn = sqlite3.connect('databases/{}.db'.format(self.__user.get_username()))
-        cursor = conn.cursor()
-
-        cursor.execute("Delete * from {}".format(self.__displayed_table))
-        conn.commit()
-
-        for i in range(self.tableContent.rowCount()):
-            query = f"INSERT INTO {self.__displayed_table} VALUES ("
-            for j in range(self.tableContent.columnCount()):
-                query += f"'{self.tableContent.item(i, j).text()}', "
-            
-            query = query[:-2] + ')'
-
-            try:
-                cursor.execute(query)
-                conn.commit()
-                self.terminal.append("Row added successfully")
-            except Exception as e:
-                self.terminal.append(str(e))
-
-        conn.close()
-
-        self.terminal.append("Changes applied successfully")
